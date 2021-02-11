@@ -2,7 +2,9 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.{PathMatcher, PathMatcher0}
 import akka.stream.ActorMaterializer
+
 import scala.io.StdIn
 
 
@@ -15,9 +17,9 @@ object WebServer {
     implicit val executionContext = system.dispatcher
 
     val route =
-      path("hello") {
+      path("hello" / Segment) { name =>
         get {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello " + name + "to akka-http</h1>"))
         }
       }
 
